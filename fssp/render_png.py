@@ -32,12 +32,11 @@ def render_png(history: np.ndarray, state_names: Sequence[str], path: str,
 
     steps, n = history.shape
     fig, ax = plt.subplots(figsize=(max(4, n * 0.25 + 2), max(3, steps * 0.2 + 1)))
-    ax.imshow(history, cmap=cmap, vmin=-0.5, vmax=k - 0.5,
-              interpolation="nearest", aspect="auto", origin="upper")
+    ax.pcolor(history[::-1], cmap=cmap, vmin=-0.5, vmax=k - 0.5, edgecolors="white", linewidths=0.5)
     ax.set_xlabel("cell")
     ax.set_ylabel("time step")
     handles = [Patch(color=colours[i], label=name) for i, name in enumerate(state_names)]
-    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.01, 1), title="states")
+    ax.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.01, 1), title="states", facecolor="lightgray")
     fig.tight_layout()
     fig.savefig(path)
     plt.close(fig)
