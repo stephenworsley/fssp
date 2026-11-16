@@ -55,12 +55,13 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     result = simulate(PRESETS[args.preset], args.cells, args.max_steps)
+    rule_set = PRESETS[args.preset]
     if args.matplotlib:
         from fssp.render_png import render_png
-        render_png(result.history, result.state_names, args.output)
+        render_png(result.history, result.state_names, args.output,
+                   fire=rule_set.fire, quiescent=rule_set.quiescent)
         print(f"Wrote {args.output}")
     else:
-        rule_set = PRESETS[args.preset]
         print(render_text(result.history, result.state_names,
                           fire=rule_set.fire, quiescent=rule_set.quiescent))
     print(format_verdict(result))

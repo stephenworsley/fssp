@@ -11,10 +11,23 @@ from matplotlib.colors import ListedColormap  # noqa: E402
 from matplotlib.patches import Patch  # noqa: E402
 
 
-def render_png(history: np.ndarray, state_names: Sequence[str], path: str) -> None:
+def state_colours(state_names: Sequence[str], fire: str | None = None,
+                  quiescent: str | None = None) -> list:
     k = len(state_names)
     base = plt.get_cmap("tab10" if k <= 10 else "tab20").colors
     colours = [base[i % len(base)] for i in range(k)]
+    for i, name in enumerate(state_names):
+        if name == quiescent:
+            colours[i] = "white"
+        elif name == fire:
+            colours[i] = "red"
+    return colours
+
+
+def render_png(history: np.ndarray, state_names: Sequence[str], path: str,
+               fire: str | None = None, quiescent: str | None = None) -> None:
+    k = len(state_names)
+    colours = state_colours(state_names, fire, quiescent)
     cmap = ListedColormap(colours)
 
     steps, n = history.shape
