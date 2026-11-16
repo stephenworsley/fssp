@@ -11,6 +11,11 @@ def test_default_text_run_succeeds(capsys):
     assert "states: " in out
     assert out.rstrip().endswith("SUCCESS: all 5 cells fired together at t=8 (minimum possible: 8).")
 
+def test_text_run_highlights_fire_and_hides_quiescent(capsys):
+    main(["--cells", "3"])
+    out = capsys.readouterr().out
+    assert "\033[1;31mF\033[0m" in out and "\033[8mL\033[0m" in out
+
 def test_text_mode_never_imports_matplotlib():
     code = ("import sys; from fssp.cli import main; main(['--cells', '3']); "
             "assert 'matplotlib' not in sys.modules")

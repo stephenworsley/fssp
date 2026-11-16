@@ -60,6 +60,8 @@ def main(argv: list[str] | None = None) -> int:
         render_png(result.history, result.state_names, args.output)
         print(f"Wrote {args.output}")
     else:
-        print(render_text(result.history, result.state_names))
+        rule_set = PRESETS[args.preset]
+        print(render_text(result.history, result.state_names,
+                          fire=rule_set.fire, quiescent=rule_set.quiescent))
     print(format_verdict(result))
     return 0 if result.success else 1
